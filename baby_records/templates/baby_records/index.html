@@ -1,0 +1,9 @@
+{% if latest_records_list_t %}
+    <ul>
+    {% for question in latest_question_list_t %}
+        <li><a href="/baby_records/{{ question.id }}/">{{ question.pee }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No records are available.</p>
+{% endif %}
