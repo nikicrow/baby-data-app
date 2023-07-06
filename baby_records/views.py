@@ -1,7 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.template import loader
 
 from .models import Toileting, Feeding
@@ -21,6 +23,10 @@ def index(request):
 def detail(request, entry_id):
     return HttpResponse("You're looking at entry %s." % entry_id)
 
-def record(request, entry_id):
-    response = "You're looking at the data record of entry %s."
-    return HttpResponse(response % entry_id)
+def toilet_record(request, entry_id):
+    toilet_entry = get_object_or_404(Toileting, pk=entry_id)
+    return HttpResponse("You're looking at entry %s." % toilet_entry) #HttpResponseRedirect(reverse("baby_app:results", args=(toilet_entry.id,)))
+
+def toilet_results(request, entry_id):
+    toilet_entry = get_object_or_404(Toileting, pk=entry_id)
+    return render(request, "baby_records/results.html", {"entry": toilet_entry})
