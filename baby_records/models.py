@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 import datetime
 
 # Create your models here.
@@ -12,13 +13,20 @@ class Toileting(models.Model):
     toilet_time = models.DateTimeField("toilet time")
     notes = models.CharField(max_length=200, default='n/a', null=True)
 
+    @admin.display(
+        boolean=True,
+        ordering="toilet_time",
+        description="Recorded recently?",
+    )
+
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
         return self.toilet_time.strftime("%m/%d/%Y, %H:%M:%S")
     
     # return entries recorded in past 24 hours
     def was_recorded_recently(self):
-        return self.toilet_time >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.toilet_time <= now
 
 
 class Feeding(models.Model):
@@ -29,10 +37,18 @@ class Feeding(models.Model):
     feed_time = models.DateTimeField("feed time")
     notes = models.CharField(max_length=200, default='n/a', null=True)
 
+    @admin.display(
+        boolean=True,
+        ordering="feed_time",
+        description="Recorded recently?",
+    )
+
+
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
         return self.feed_time.strftime("%m/%d/%Y, %H:%M:%S")
     
-    # return entries recorded in past 24 hours
+    # return entries recorded in past 24 hours and not in the future
     def was_recorded_recently(self):
-        return self.feed_time >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.feed_time <= now
