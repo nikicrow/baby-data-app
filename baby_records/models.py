@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib import admin
+from django.forms import ModelForm
 import datetime
 
 # Create your models here.
@@ -52,3 +53,14 @@ class Feeding(models.Model):
     def was_recorded_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.feed_time <= now
+    
+class ToiletingForm(ModelForm):
+    class Meta:
+        model = Toileting
+        fields = "__all__"
+
+
+class FeedingForm(ModelForm):
+    class Meta:
+        model = Feeding
+        fields = "__all__"
