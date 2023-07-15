@@ -12,8 +12,8 @@ from .models import Toileting, Feeding, ToiletingForm
 
 def index(request):
     # Get toileting and feeding recordsrecords
-    latest_records_list_toilet = Toileting.objects.order_by("-toilet_time")[:10]
-    latest_records_list_feed = Feeding.objects.order_by("-feed_time")[:10]
+    latest_records_list_toilet = Toileting.objects.order_by("-toilet_time")[:5]
+    latest_records_list_feed = Feeding.objects.order_by("-feed_time")[:5]
     context = {
         "latest_records_list_toilet": latest_records_list_toilet,
         "latest_records_list_feed": latest_records_list_feed,

@@ -2,17 +2,24 @@ from django.db import models
 from django.utils import timezone
 from django.contrib import admin
 from django.forms import ModelForm
+from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
 # Create your models here.
 class Toileting(models.Model):
     pee = models.BooleanField(default=False)
-    pee_scale = models.IntegerField(default=0)
+    pee_scale = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(10), MinValueValidator(1)]
+    )
     poo = models.BooleanField(default=False)
-    poo_scale =  models.IntegerField(default=0)
+    poo_scale = models.IntegerField(
+        default=1,
+        validators=[MaxValueValidator(10), MinValueValidator(1)]
+    )
     # poo_colour 
     toilet_time = models.DateTimeField("toilet time")
-    notes = models.CharField(max_length=200, default='n/a', null=True)
+    notes = models.CharField(max_length=200, default='n/a', null=True, blank=True)
 
     @admin.display(
         boolean=True,
@@ -36,7 +43,7 @@ class Feeding(models.Model):
     left_boob_first = models.BooleanField(default=False)
     left_boob_time =  models.IntegerField(default=0)
     feed_time = models.DateTimeField("feed time")
-    notes = models.CharField(max_length=200, default='n/a', null=True)
+    notes = models.CharField(max_length=200, default='n/a', null=True, blank=True)
 
     @admin.display(
         boolean=True,

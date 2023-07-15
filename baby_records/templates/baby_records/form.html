@@ -3,13 +3,26 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <title>Index</title>  
+    <title>Toileting form</title>  
+    <!-- <title>{% block title %}{% endblock %}</title> -->
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>  
+
 <body>  
     <form method="POST" action="/baby_records/toilet_form/" class="post-form" enctype="multipart/form-data">  
-        {% csrf_token %}  
-        {{ toilet_form.as_p }}  
-        <button type="submit" class="save btn btn-default">Save</button>  
+        {% csrf_token %} 
+        {% for field in toilet_form %}
+        <div class="container py-2">
+            {% if  {{ field }} != "id_toilet_time" %}
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+            {% endif %}
+        </div>
+    {% endfor %} 
+    <div class="container py-2"> <button type="submit" class="btn btn-outline-primary">Submit</button> </div>
     </form>  
+    <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records" role="button">Return to home </a> </div>
 </body>  
 </html> 
