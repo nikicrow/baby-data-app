@@ -9,15 +9,15 @@ import datetime
 class Toileting(models.Model):
     pee = models.BooleanField(default=False)
     pee_scale = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(10), MinValueValidator(1)]
+        default=0,
+        validators=[MaxValueValidator(10), MinValueValidator(0)]
     )
     poo = models.BooleanField(default=False)
     poo_scale = models.IntegerField(
-        default=1,
-        validators=[MaxValueValidator(10), MinValueValidator(1)]
+        default=0,
+        validators=[MaxValueValidator(10), MinValueValidator(0)]
     )
-    # poo_colour 
+    poo_colour = models.CharField(default='brown')
     toilet_time = models.DateTimeField("toilet time")
     notes = models.CharField(max_length=200, default='n/a', null=True, blank=True)
 
@@ -61,13 +61,3 @@ class Feeding(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.feed_time <= now
     
-class ToiletingForm(ModelForm):
-    class Meta:
-        model = Toileting
-        fields = "__all__"
-
-
-class FeedingForm(ModelForm):
-    class Meta:
-        model = Feeding
-        fields = "__all__"

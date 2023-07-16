@@ -14,12 +14,10 @@
     <form method="POST" action="/baby_records/toilet_form/" class="post-form" enctype="multipart/form-data">  
         {% csrf_token %} 
         {% for field in toilet_form %}
-        <div class="container py-2">
-            {% if  {{ field }} != "id_toilet_time" %}
+            <div class="container py-2">
                 {{ field.errors }}
                 {{ field.label_tag }} {{ field }}
-            {% endif %}
-        </div>
+            </div>
     {% endfor %} 
     <div class="container py-2"> <button type="submit" class="btn btn-outline-primary">Submit</button> </div>
     </form>  

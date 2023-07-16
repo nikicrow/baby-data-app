@@ -4,10 +4,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.forms import modelformset_factory
 from django.contrib import messages
-
-from .models import Toileting, Feeding, ToiletingForm
+from .forms import ToiletingForm
+from .models import Toileting, Feeding
 
 
 def index(request):
@@ -30,7 +29,7 @@ def toilet_record(request, entry_id):
     #HttpResponseRedirect(reverse("baby_app:results", args=(toilet_entry.id,)))
 
 def toilet_form(request):
-    if request.method == "POST":  
+    if request.method == "POST": 
         toilet_form = ToiletingForm(request.POST)  
         if toilet_form.is_valid(): 
             toilet_form.save() 
