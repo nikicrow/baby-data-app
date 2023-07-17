@@ -1,13 +1,18 @@
 from django import forms
-from .models import Toileting, Feeding
-from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
+from .models import Toileting, Feeding, Sleeping, Growth
   
-POO_COLOURS_CHOICES = [
+poo_colours_choices = [
     ('brown', 'Brown'),
     ('yellow', 'Yellow'),
     ('orange', 'Red'),
     ('green', 'Green'),
     ('black', 'Black'),
+]
+
+nap_quality_choices = [
+    ('low', 'Low'),
+    ('medium', 'Medium'),
+    ('high', 'High'),
 ]
 
 class ToiletingForm(forms.ModelForm):
@@ -21,7 +26,7 @@ class ToiletingForm(forms.ModelForm):
             'pee_scale':forms.NumberInput(),
             'poo': forms.CheckboxInput(),
             'poo_scale':forms.NumberInput(),
-            'poo_colour' : forms.Select(choices=POO_COLOURS_CHOICES),
+            'poo_colour' : forms.Select(choices=poo_colours_choices),
             'toilet_time': forms.DateTimeInput(attrs={'type':'datetime-local'}),
             'notes':forms.TextInput(attrs={'required': False})
         }
@@ -41,3 +46,31 @@ class FeedingForm(forms.ModelForm):
             'notes':forms.TextInput(attrs={'required': False})
         }
 
+class SleepingForm(forms.ModelForm):
+
+    class Meta:
+        model = Sleeping
+        fields = ('nap_length','nap_quality','nap_location','nap_start_time','notes')
+
+        widgets = {
+            'nap_length':forms.NumberInput(),
+            'nap_quality' : forms.Select(choices=nap_quality_choices),
+            'nap_location':forms.TextInput(attrs={'required': False}),
+            'nap_start_time': forms.DateTimeInput(attrs={'type':'datetime-local'}),
+            'notes':forms.TextInput(attrs={'required': False})
+        }
+
+
+class GrowthForm(forms.ModelForm):
+
+    class Meta:
+        model = Growth
+        fields = ('head_circumference','height','weight','measurement_time','notes')
+
+        widgets = {
+            'head_circumference':forms.NumberInput(),
+            'height':forms.NumberInput(),
+            'weight':forms.NumberInput(),
+            'measurement_time': forms.DateTimeInput(attrs={'type':'datetime-local'}),
+            'notes':forms.TextInput(attrs={'required': False})
+        }

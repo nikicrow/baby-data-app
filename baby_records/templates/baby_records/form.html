@@ -3,10 +3,14 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    {% if form_type == 'toilet' %}
+    {% if form_header == 'toileting' %}
         <title> Toileting form</title>  
-    {% elif form_type == 'feed' %}
+    {% elif form_header == 'feeding' %}
         <title> Feeding form</title>
+    {% elif form_header == 'sleeping' %}
+        <title> Sleeping form</title>
+    {% elif form_header == 'growth measurements' %}
+        <title> Growth Measurement form</title>
     {% else %}
         <title> Form</title>
     {% endif %}
@@ -25,6 +29,12 @@
         </li>
         <li class="nav-item">
         <a class="nav-link link-light" href="/baby_records/feeding_form">Feeding</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/sleeping_form">Sleeping</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/growth_form">Growth</a>
         </li>
     </ul>
     {% block content %}
