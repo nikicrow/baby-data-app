@@ -42,11 +42,34 @@
 <body>
 <h2>Latest toileting entries below:</h2>
 {% if latest_records_list_toilet %}
-    <ul>
-    {% for toilet_record in latest_records_list_toilet %}
-        <li><a href="/baby_records/{{ toilet_record.id }}/toileting">Pee = {{ toilet_record.pee }}, Poo = {{ toilet_record.poo }}, Time = {{ toilet_record.toilet_time }}</a></li>
-    {% endfor %}
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Entry Id</th>
+                <th scope="col">Pee</th>
+                <th scope="col">Pee scale</th>
+                <th scope="col">Poo</th>
+                <th scope="col">Poo scale</th>
+                <th scope="col">Poo colour</th>
+                <th scope="col">Time</th>
+                <th scope="col">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for toilet_record in latest_records_list_toilet %}
+            <tr>
+                <th scope = "row"><a href="/baby_records/{{ toilet_record.id }}/toileting"> {{toilet_record.id}}</a></th>
+                <td>{{ toilet_record.pee }}</td>
+                <td>{{ toilet_record.pee_scale }}</td>
+                <td>{{ toilet_record.poo }}</td>
+                <td>{{ toilet_record.poo_scale }}</td>
+                <td>{{ toilet_record.poo_colour }}</td>
+                <td>{{ toilet_record.toilet_time }}</td>
+                <td>{{ toilet_record.notes }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <p>No toilet records are available.</p>
 {% endif %}
