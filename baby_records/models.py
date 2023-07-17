@@ -19,7 +19,7 @@ class Toileting(models.Model):
     )
     poo_colour = models.CharField(default='brown')
     toilet_time = models.DateTimeField("toilet time")
-    notes = models.CharField(max_length=200, default='n/a', null=True, blank=True)
+    notes = models.CharField(max_length=200, default='n/a', null=True)
 
     @admin.display(
         boolean=True,
@@ -39,11 +39,17 @@ class Toileting(models.Model):
 
 class Feeding(models.Model):
     right_boob_first = models.BooleanField(default=False)
-    right_boob_time = models.IntegerField(default=0)
+    right_boob_time = models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)]
+    )
     left_boob_first = models.BooleanField(default=False)
-    left_boob_time =  models.IntegerField(default=0)
+    left_boob_time =  models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)]
+    )
     feed_time = models.DateTimeField("feed time")
-    notes = models.CharField(max_length=200, default='n/a', null=True, blank=True)
+    notes = models.CharField(max_length=200, default='n/a', null=True)
 
     @admin.display(
         boolean=True,

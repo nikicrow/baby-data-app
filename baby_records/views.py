@@ -5,9 +5,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from .forms import ToiletingForm
+from .forms import ToiletingForm, FeedingForm
 from .models import Toileting, Feeding
-
+from django.forms.models import model_to_dict
 
 def index(request):
     # Get toileting and feeding recordsrecords
@@ -19,16 +19,16 @@ def index(request):
     }
     return render(request, 'baby_records/index.html', context)
 
-def detail(request, entry_id):
-    toilet_session = Toileting.objects.get(pk=entry_id)
-    return render(request, 'baby_records/detail.html', {'entry': toilet_session})
+def toilet_detail(request, entry_id):
+    toilet_session = ToiletingForm(data=model_to_dict(Toileting.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toileting'})
 
-def toilet_record(request, entry_id):
-    toilet_entry = get_object_or_404(Toileting, pk=entry_id)
-    return HttpResponse("You're looking at toilet entry %s." % toilet_entry) 
-    #HttpResponseRedirect(reverse("baby_app:results", args=(toilet_entry.id,)))
+def feeding_detail(request, entry_id):
+    feeding_session = FeedingForm(data=model_to_dict(Feeding.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': feeding_session, 'entry_type': 'feeding'})
 
 def toilet_form(request):
+    form_header = 'toileting'
     if request.method == "POST": 
         toilet_form = ToiletingForm(request.POST)  
         if toilet_form.is_valid(): 
@@ -39,4 +39,21 @@ def toilet_form(request):
                 pass  
     else:  
         toilet_form = ToiletingForm()  
-    return render(request,'baby_records/form.html', {"toilet_form": toilet_form})
+    context = {"form": toilet_form, "form_header" : form_header, "form_url": '/baby_records/toilet_form/'}
+    return render(request,'baby_records/form.html', context)
+
+
+def feeding_form(request):
+    form_header = 'feeding'
+    if request.method == "POST": 
+        feeding_form = FeedingForm(request.POST)  
+        if feeding_form.is_valid(): 
+            feeding_form.save() 
+            try:  
+                return redirect('/baby_records/feeding_form/')  
+            except:  
+                pass  
+    else:  
+        feeding_form = FeedingForm()  
+    context = {"form": feeding_form, "form_header" : form_header, "form_url": '/baby_records/feeding_form/'}
+    return render(request,'baby_records/form.html', context)

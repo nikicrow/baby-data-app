@@ -4,9 +4,10 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    # ex: /baby_records/5/
-    path("<int:entry_id>/", views.detail, name="detail"),
-    # ex: /baby_records/5/toilet_record/
-    path("<int:entry_id>/toilet_record/", views.toilet_record, name="toilet_record"),
+    # details
+    path("<int:entry_id>/toileting", views.toilet_detail, name="toilet_detail"),
+    path("<int:entry_id>/feeding", views.feeding_detail, name="feeding_detail"),
+    # forms
     path("toilet_form/", views.toilet_form, name="toilet_form"),
+    path("feeding_form/", views.feeding_form, name="feeding_form"),
 ]

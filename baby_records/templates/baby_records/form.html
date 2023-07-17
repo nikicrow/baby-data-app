@@ -3,17 +3,39 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <title>Toileting form</title>  
-    <!-- <title>{% block title %}{% endblock %}</title> -->
+    {% if form_type == 'toilet' %}
+        <title> Toileting form</title>  
+    {% elif form_type == 'feed' %}
+        <title> Feeding form</title>
+    {% else %}
+        <title> Form</title>
+    {% endif %}
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 </head>  
 
+<div class="container">
+    <ul class="nav bg-info">
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records">Home</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/toilet_form">Toileting</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/feeding_form">Feeding</a>
+        </li>
+    </ul>
+    {% block content %}
+    {% endblock %}
+</div>
+
 <body>  
-    <form method="POST" action="/baby_records/toilet_form/" class="post-form" enctype="multipart/form-data">  
+    <h2> Please enter the details for the new {{form_header}} entry </h2>
+    <form method="POST" action={{form_url}} class="post-form" enctype="multipart/form-data">  
         {% csrf_token %} 
-        {% for field in toilet_form %}
+        {% for field in form %}
             <div class="container py-2">
                 {{ field.errors }}
                 {{ field.label_tag }} {{ field }}
