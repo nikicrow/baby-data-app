@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Baby Data home</title>
+    <title>Update record</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -31,11 +31,14 @@
 
 <body>  
     <h3> This is the {{entry_type}} entry you selected  </h3>
-    {% csrf_token %} 
-    {% for field in session_entry %}
-        <li><b>{{ field.label }}:</b> {{ field.data }}</li>
-    {% endfor %}
-    <!-- <div class="container py-2"> <a class="btn btn-outline-secondary" href="/baby_records/{{entry_type}}_edit/{{session_entry.entry_id}}" role="button">Update record </a> </div> -->
+    Time: {{ session_entry }}
+    <br/>
+    <form action="" method = POST>
+        {% csrf_token %}
+        {{form.as_p}}
+        <br/>
+        <div class="container py-2"> <input type="submit" value = "Update" class="btn btn-outline-primary"> </div>
+    </form>
     <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records" role="button">Return to home </a> </div>
 </body>  
 </html> 

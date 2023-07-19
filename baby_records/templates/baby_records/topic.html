@@ -56,7 +56,7 @@
         {% for field in toilet_record %}
             <li><b>{{ field.label }}:</b> {{ field.data }}</li>
         {% endfor %}
-        <td><a href="/baby_records/{{ toilet_record.id }}/toileting"> {{toilet_record.id}}</a></td>
+        <td><a href="/baby_records/toileting/{{ toilet_record.id }}"> {{toilet_record.id}}</a></td>
         <td>{{ toilet_record.pee }}</td>
         <td>{{ toilet_record.pee_scale }}</td>
         <td>{{ toilet_record.poo }}</td>

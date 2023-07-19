@@ -21,7 +21,7 @@ def index(request):
 
 def toilet_detail(request, entry_id):
     toilet_session = ToiletingForm(data=model_to_dict(Toileting.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toileting'})
+    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toilet'})
 
 def feeding_detail(request, entry_id):
     feeding_session = FeedingForm(data=model_to_dict(Feeding.objects.get(pk=entry_id)))
@@ -34,7 +34,6 @@ def sleeping_detail(request, entry_id):
 def growth_detail(request, entry_id):
     growth_session = GrowthForm(data=model_to_dict(Growth.objects.get(pk=entry_id)))
     return render(request, 'baby_records/detail.html', {'session_entry': growth_session, 'entry_type': 'growth'})
-
 
 def toilet_form(request):
     form_header = 'toileting'
@@ -98,3 +97,18 @@ def growth_form(request):
         growth_form = GrowthForm()  
     context = {"form": growth_form, "form_header" : form_header, "form_url": '/baby_records/growth_form/'}
     return render(request,'baby_records/form.html', context)
+
+
+def toilet_edit(request, entry_id):
+    record = Toileting.objects.get(pk = entry_id)
+    form = ToiletingForm(request.POST or None, instance=record)  
+    if form.is_valid():
+        form.save()
+        return redirect('/baby_records/')
+    context = {'session_entry': record, 'entry_type': 'toileting', 'form': form}
+    return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
+
+def toilet_delete(request, entry_id):
+   record = Toileting.objects.get(pk = entry_id)
+   record.delete()
+   return redirect('/baby_records/')
