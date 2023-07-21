@@ -10,30 +10,50 @@ from .models import Toileting, Feeding, Sleeping, Growth
 from django.forms.models import model_to_dict
 
 def index(request):
-    # Get toileting and feeding recordsrecords
-    latest_records_list_toilet = Toileting.objects.order_by("-toilet_time")[:5]
-    latest_records_list_feed = Feeding.objects.order_by("-feed_time")[:5]
-    context = {
-        "latest_records_list_toilet": latest_records_list_toilet,
-        "latest_records_list_feed": latest_records_list_feed,
-    }
+    context = {}
     return render(request, 'baby_records/index.html', context)
 
-def toilet_detail(request, entry_id):
-    toilet_session = ToiletingForm(data=model_to_dict(Toileting.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toilet'})
 
-def feeding_detail(request, entry_id):
-    feeding_session = FeedingForm(data=model_to_dict(Feeding.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': feeding_session, 'entry_type': 'feeding'})
+def toilet_main_page(request):
+    # Show toileting main things
+    latest_records_list = Toileting.objects.order_by("-toilet_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'toileting',
+    }
+    return render(request, 'baby_records/main_toilet.html', context)
 
-def sleeping_detail(request, entry_id):
-    sleeping_session = SleepingForm(data=model_to_dict(Sleeping.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': sleeping_session, 'entry_type': 'sleeping'})
 
-def growth_detail(request, entry_id):
-    growth_session = GrowthForm(data=model_to_dict(Growth.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': growth_session, 'entry_type': 'growth'})
+def feed_main_page(request):
+    # Show feed main things
+    latest_records_list = Feeding.objects.order_by("-feed_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'feeding',
+    }
+    return render(request, 'baby_records/main_feed.html', context)
+
+
+def sleep_main_page(request):
+    # Show feed main things
+    latest_records_list = Sleeping.objects.order_by("-nap_start_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'sleeping',
+    }
+    return render(request, 'baby_records/main_sleep.html', context)
+
+
+def growth_main_page(request):
+    # Show feed main things
+    latest_records_list = Growth.objects.order_by("-measurement_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'growth',
+    }
+    return render(request, 'baby_records/main_growth.html', context)
+
+### CREATE
 
 def toilet_form(request):
     form_header = 'toileting'
@@ -98,6 +118,25 @@ def growth_form(request):
     context = {"form": growth_form, "form_header" : form_header, "form_url": '/baby_records/growth_form/'}
     return render(request,'baby_records/form.html', context)
 
+### READ
+
+def toilet_detail(request, entry_id):
+    toilet_session = ToiletingForm(data=model_to_dict(Toileting.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toilet'})
+
+def feeding_detail(request, entry_id):
+    feeding_session = FeedingForm(data=model_to_dict(Feeding.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': feeding_session, 'entry_type': 'feeding'})
+
+def sleeping_detail(request, entry_id):
+    sleeping_session = SleepingForm(data=model_to_dict(Sleeping.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': sleeping_session, 'entry_type': 'sleeping'})
+
+def growth_detail(request, entry_id):
+    growth_session = GrowthForm(data=model_to_dict(Growth.objects.get(pk=entry_id)))
+    return render(request, 'baby_records/detail.html', {'session_entry': growth_session, 'entry_type': 'growth'})
+
+### UPDATE
 
 def toilet_update(request, entry_id):
     record = Toileting.objects.get(pk = entry_id)
@@ -135,6 +174,7 @@ def growth_update(request, entry_id):
     context = {'session_entry': record, 'entry_type': 'growth', 'form': form}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
+### DELETE
 
 def toilet_delete(request, entry_id):
    record = Toileting.objects.get(pk = entry_id)
@@ -155,42 +195,3 @@ def growth_delete(request, entry_id):
    record = Growth.objects.get(pk = entry_id)
    record.delete()
    return redirect('/baby_records/')
-
-def toilet_main_page(request):
-    # Show toileting main things
-    latest_records_list = Toileting.objects.order_by("-toilet_time")[:10]
-    context = {
-        "latest_records_list": latest_records_list,
-        "entry_type": 'toileting',
-    }
-    return render(request, 'baby_records/main_toilet.html', context)
-
-
-def feed_main_page(request):
-    # Show feed main things
-    latest_records_list = Feeding.objects.order_by("-feed_time")[:10]
-    context = {
-        "latest_records_list": latest_records_list,
-        "entry_type": 'feeding',
-    }
-    return render(request, 'baby_records/main_feed.html', context)
-
-
-def sleep_main_page(request):
-    # Show feed main things
-    latest_records_list = Sleeping.objects.order_by("-nap_start_time")[:10]
-    context = {
-        "latest_records_list": latest_records_list,
-        "entry_type": 'sleeping',
-    }
-    return render(request, 'baby_records/main_sleep.html', context)
-
-
-def growth_main_page(request):
-    # Show feed main things
-    latest_records_list = Growth.objects.order_by("-measurement_time")[:10]
-    context = {
-        "latest_records_list": latest_records_list,
-        "entry_type": 'growth',
-    }
-    return render(request, 'baby_records/main_growth.html', context)
