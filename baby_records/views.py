@@ -99,7 +99,7 @@ def growth_form(request):
     return render(request,'baby_records/form.html', context)
 
 
-def toilet_edit(request, entry_id):
+def toilet_update(request, entry_id):
     record = Toileting.objects.get(pk = entry_id)
     form = ToiletingForm(request.POST or None, instance=record)  
     if form.is_valid():
@@ -108,7 +108,89 @@ def toilet_edit(request, entry_id):
     context = {'session_entry': record, 'entry_type': 'toileting', 'form': form}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
+def feed_update(request, entry_id):
+    record = Feeding.objects.get(pk = entry_id)
+    form = FeedingForm(request.POST or None, instance=record)  
+    if form.is_valid():
+        form.save()
+        return redirect('/baby_records/')
+    context = {'session_entry': record, 'entry_type': 'feeding', 'form': form}
+    return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
+
+def sleep_update(request, entry_id):
+    record = Sleeping.objects.get(pk = entry_id)
+    form = SleepingForm(request.POST or None, instance=record)  
+    if form.is_valid():
+        form.save()
+        return redirect('/baby_records/')
+    context = {'session_entry': record, 'entry_type': 'sleeping', 'form': form}
+    return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
+
+def growth_update(request, entry_id):
+    record = Growth.objects.get(pk = entry_id)
+    form = GrowthForm(request.POST or None, instance=record)  
+    if form.is_valid():
+        form.save()
+        return redirect('/baby_records/')
+    context = {'session_entry': record, 'entry_type': 'growth', 'form': form}
+    return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
+
+
 def toilet_delete(request, entry_id):
    record = Toileting.objects.get(pk = entry_id)
    record.delete()
    return redirect('/baby_records/')
+
+def feed_delete(request, entry_id):
+   record = Feeding.objects.get(pk = entry_id)
+   record.delete()
+   return redirect('/baby_records/')
+
+def sleep_delete(request, entry_id):
+   record = Sleeping.objects.get(pk = entry_id)
+   record.delete()
+   return redirect('/baby_records/')
+
+def growth_delete(request, entry_id):
+   record = Growth.objects.get(pk = entry_id)
+   record.delete()
+   return redirect('/baby_records/')
+
+def toilet_main_page(request):
+    # Show toileting main things
+    latest_records_list = Toileting.objects.order_by("-toilet_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'toileting',
+    }
+    return render(request, 'baby_records/main_toilet.html', context)
+
+
+def feed_main_page(request):
+    # Show feed main things
+    latest_records_list = Feeding.objects.order_by("-feed_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'feeding',
+    }
+    return render(request, 'baby_records/main_feed.html', context)
+
+
+def sleep_main_page(request):
+    # Show feed main things
+    latest_records_list = Sleeping.objects.order_by("-nap_start_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'sleeping',
+    }
+    return render(request, 'baby_records/main_sleep.html', context)
+
+
+def growth_main_page(request):
+    # Show feed main things
+    latest_records_list = Growth.objects.order_by("-measurement_time")[:10]
+    context = {
+        "latest_records_list": latest_records_list,
+        "entry_type": 'growth',
+    }
+    return render(request, 'baby_records/main_growth.html', context)

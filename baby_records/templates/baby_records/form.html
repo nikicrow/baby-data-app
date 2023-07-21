@@ -25,16 +25,16 @@
         <a class="nav-link link-light" href="/baby_records">Home</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link link-light" href="/baby_records/toilet_form">Toileting</a>
+        <a class="nav-link link-light" href="/baby_records/main_toilet">Toileting</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link link-light" href="/baby_records/feeding_form">Feeding</a>
+        <a class="nav-link link-light" href="/baby_records/main_feed">Feeding</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link link-light" href="/baby_records/sleeping_form">Sleeping</a>
+        <a class="nav-link link-light" href="/baby_records/main_sleep">Sleeping</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link link-light" href="/baby_records/growth_form">Growth</a>
+        <a class="nav-link link-light" href="/baby_records/main_growth">Growth</a>
         </li>
     </ul>
     {% block content %}
@@ -53,6 +53,11 @@
     {% endfor %} 
     <div class="container py-2"> <button type="submit" class="btn btn-outline-primary">Submit</button> </div>
     </form>  
+    {% if form_header == 'toileting' %}
+        <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records/toilet_main" role="button">Return to toilet page </a> </div>
+    {% else %}
+        put button here
+    {% endif %}
     <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records" role="button">Return to home </a> </div>
 </body>  
 </html> 

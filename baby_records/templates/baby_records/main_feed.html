@@ -1,0 +1,79 @@
+<!-- This page is the index, aka http://127.0.0.1:8000/baby_records/ -->
+<html>
+<head>
+    <title>Sleeping Data home</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+
+<div class="container">
+    <ul class="nav bg-info">
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records">Home</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/main_toilet">Toileting</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/main_feed">Feeding</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/main_sleep">Sleeping</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link link-light" href="/baby_records/main_growth">Growth</a>
+        </li>
+    </ul>
+    {% block content %}
+    {% endblock %}
+</div>
+
+<header> 
+    <centre></centre>
+    <h1 class="text-center">Hello! Welcome to the Baby Crow {{entry_type}} records </h1>
+</header>
+<div class="d-flex justify-content-between px-2">
+    <a class="btn btn-outline-warning" href="/baby_records/feeding_form" role="button">Create new {{entry_type}} record</a>
+</div>
+
+
+<body>
+<h2>Latest {{entry_type}} entries below:</h2>
+{% if latest_records_list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Entry Id</th>
+                <th scope="col">Right boob first</th>
+                <th scope="col">Right boob time</th>
+                <th scope="col">Left boob first</th>
+                <th scope="col">Left boob time</th>
+                <th scope="col">Feed Time</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in latest_records_list %}
+            <tr>
+                <th scope = "row"><a href="/baby_records/feeding/{{ record.id }}"> {{record.id}}</a></th>
+                <td>{{ record.right_boob_first }}</td>
+                <td>{{ record.right_boob_time }}</td>
+                <td>{{ record.left_boob_first }}</td>
+                <td>{{ record.left_boob_time }}</td>
+                <td>{{ record.feed_time }}</td>
+                <td>{{ record.notes }}</td>
+                <td><a method="POST" href="/baby_records/feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No {{entry_type}} records are available.</p>
+{% endif %}
+
+</body>
+</html>
