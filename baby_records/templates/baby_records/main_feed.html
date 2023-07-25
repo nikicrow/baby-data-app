@@ -1,7 +1,7 @@
 <!-- This page is the index, aka http://127.0.0.1:8000/baby_records/ -->
 <html>
 <head>
-    <title>Sleeping Data home</title>
+    <title>Feeding Data home</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -34,20 +34,19 @@
     <h1 class="text-center">Hello! Welcome to the Baby Crow {{entry_type}} records </h1>
 </header>
 <div class="d-flex justify-content-between px-2">
-    <a class="btn btn-outline-warning" href="/baby_records/feeding_form" role="button">Create new {{entry_type}} record</a>
+    <a class="btn btn-outline-warning" href="/baby_records/feeding_form" role="button">Create new breast {{entry_type}} record</a>
 </div>
 
 
 <body>
-<h2>Latest {{entry_type}} entries below:</h2>
-{% if latest_records_list %}
+<h2>Latest breast {{entry_type}} entries below:</h2>
+{% if latest_records_list_br %}
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Entry Id</th>
-                <th scope="col">Right boob first</th>
+                <th scope="col">Which boob first</th>
                 <th scope="col">Right boob time</th>
-                <th scope="col">Left boob first</th>
                 <th scope="col">Left boob time</th>
                 <th scope="col">Feed Time</th>
                 <th scope="col">Notes</th>
@@ -56,12 +55,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for record in latest_records_list %}
+            {% for record in latest_records_list_br %}
             <tr>
                 <th scope = "row"><a href="/baby_records/feeding/{{ record.id }}"> {{record.id}}</a></th>
-                <td>{{ record.right_boob_first }}</td>
+                <td>{{ record.which_boob_first }}</td>
                 <td>{{ record.right_boob_time }}</td>
-                <td>{{ record.left_boob_first }}</td>
                 <td>{{ record.left_boob_time }}</td>
                 <td>{{ record.feed_time }}</td>
                 <td>{{ record.notes }}</td>
@@ -72,7 +70,38 @@
         </tbody>
     </table>
 {% else %}
-    <p>No {{entry_type}} records are available.</p>
+    <p>No breast {{entry_type}} records are available.</p>
+{% endif %}
+{% if latest_records_list_bt %}
+<h2>Latest bottle {{entry_type}} entries below:</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Entry Id</th>
+                <th scope="col">Amount drank (ml)</th>
+                <th scope="col">Drinking time taken</th>
+                <th scope="col">Feed Time</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in latest_records_list_bt %}
+            <tr>
+                <th scope = "row"><a href="/baby_records/feeding/{{ record.id }}"> {{record.id}}</a></th>
+                <td>{{ record.drinking_ml }}</td>
+                <td>{{ record.drinking_time }}</td>
+                <td>{{ record.feed_time }}</td>
+                <td>{{ record.notes }}</td>
+                <td><a method="POST" href="/baby_records/feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No bottle {{entry_type}} records are available.</p>
 {% endif %}
 
 </body>

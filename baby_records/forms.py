@@ -1,10 +1,11 @@
 from django import forms
-from .models import Toileting, Feeding, Sleeping, Growth
+from .models import Toileting, BreastFeeding, BottleFeeding, Sleeping, Growth
   
 poo_colours_choices = [
     ('brown', 'Brown'),
     ('yellow', 'Yellow'),
-    ('orange', 'Red'),
+    ('orange', 'Orange'),
+    ('red', 'Red'),
     ('green', 'Green'),
     ('black', 'Black'),
 ]
@@ -13,6 +14,11 @@ nap_quality_choices = [
     ('low', 'Low'),
     ('medium', 'Medium'),
     ('high', 'High'),
+]
+
+boob_choices = [
+    ('left', 'Left'),
+    ('right', 'Right'),
 ]
 
 class ToiletingForm(forms.ModelForm):
@@ -31,16 +37,28 @@ class ToiletingForm(forms.ModelForm):
             'notes':forms.TextInput(attrs={'required': False})
         }
 
-class FeedingForm(forms.ModelForm):
+class BottleFeedingForm(forms.ModelForm):
 
     class Meta:
-        model = Feeding
-        fields = ('right_boob_first','right_boob_time','left_boob_first','left_boob_time','feed_time','notes')
+        model = BottleFeeding
+        fields = ('drinking_ml','drinking_time','feed_time','notes')
 
         widgets = {
-            'right_boob_first': forms.CheckboxInput(),
+            'drinking_ml':forms.NumberInput(),
+            'drinking_time':forms.NumberInput(),
+            'feed_time': forms.DateTimeInput(attrs={'type':'datetime-local'}),
+            'notes':forms.TextInput(attrs={'required': False})
+        }
+
+class BreastFeedingForm(forms.ModelForm):
+
+    class Meta:
+        model = BreastFeeding
+        fields = ('which_boob_first','right_boob_time','left_boob_time','feed_time','notes')
+
+        widgets = {
+            'which_boob_first': forms.Select(choices=boob_choices),
             'right_boob_time':forms.NumberInput(),
-            'left_boob_first': forms.CheckboxInput(),
             'left_boob_time':forms.NumberInput(),
             'feed_time': forms.DateTimeInput(attrs={'type':'datetime-local'}),
             'notes':forms.TextInput(attrs={'required': False})

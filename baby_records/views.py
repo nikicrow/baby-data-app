@@ -5,8 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from .forms import ToiletingForm, FeedingForm, SleepingForm, GrowthForm
-from .models import Toileting, Feeding, Sleeping, Growth
+from .forms import ToiletingForm, BreastFeedingForm, BottleFeedingForm, SleepingForm, GrowthForm
+from .models import Toileting, BreastFeeding, BottleFeeding, Sleeping, Growth
 from django.forms.models import model_to_dict
 
 def index(request):
@@ -26,9 +26,11 @@ def toilet_main_page(request):
 
 def feed_main_page(request):
     # Show feed main things
-    latest_records_list = Feeding.objects.order_by("-feed_time")[:10]
+    latest_records_list_br = BreastFeeding.objects.order_by("-feed_time")[:10]
+    latest_records_list_bt = BottleFeeding.objects.order_by("-feed_time")[:10]
     context = {
-        "latest_records_list": latest_records_list,
+        "latest_records_list_br": latest_records_list_br,
+        "latest_records_list_bt": latest_records_list_bt,
         "entry_type": 'feeding',
     }
     return render(request, 'baby_records/main_feed.html', context)
@@ -74,7 +76,7 @@ def toilet_form(request):
 def feeding_form(request):
     form_header = 'feeding'
     if request.method == "POST": 
-        feeding_form = FeedingForm(request.POST)  
+        feeding_form = BreastFeedingForm(request.POST)  
         if feeding_form.is_valid(): 
             feeding_form.save() 
             try:  
@@ -82,7 +84,7 @@ def feeding_form(request):
             except:  
                 pass  
     else:  
-        feeding_form = FeedingForm()  
+        feeding_form = BreastFeedingForm()  
     context = {"form": feeding_form, "form_header" : form_header, "form_url": '/baby_records/feeding_form/'}
     return render(request,'baby_records/form.html', context)
 

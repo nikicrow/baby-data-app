@@ -29,7 +29,7 @@ class Toileting(models.Model):
 
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
-        return self.toilet_time.strftime("%m/%d/%Y, %H:%M")
+        return self.toilet_time.strftime("%m/%d, %H:%M")
     
     # return entries recorded in past 24 hours
     def was_recorded_recently(self):
@@ -37,13 +37,12 @@ class Toileting(models.Model):
         return now - datetime.timedelta(days=1) <= self.toilet_time <= now
 
 
-class Feeding(models.Model):
-    right_boob_first = models.BooleanField(default=False)
+class BreastFeeding(models.Model):
+    which_boob_first = models.CharField(default='right')
     right_boob_time = models.IntegerField(
         default=0,
         validators=[MinValueValidator(0)]
     )
-    left_boob_first = models.BooleanField(default=False)
     left_boob_time =  models.IntegerField(
         default=0,
         validators=[MinValueValidator(0)]
@@ -56,11 +55,37 @@ class Feeding(models.Model):
         ordering="feed_time",
         description="Recorded recently?",
     )
+    # when we call the model lets return something helpful to identify the object
+    def __str__(self):
+        return self.feed_time.strftime("%m/%d, %H:%M")
+    
+    # return entries recorded in past 24 hours and not in the future
+    def was_recorded_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.feed_time <= now    
+    
 
+class BottleFeeding(models.Model):
+    drinking_ml =  models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)]
+    )
+    drinking_time =  models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)]
+    )
+    feed_time = models.DateTimeField("feed time",default = timezone.now())
+    notes = models.CharField(max_length=200, default='n/a', null=True)
+
+    @admin.display(
+        boolean=True,
+        ordering="feed_time",
+        description="Recorded recently?",
+    )
 
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
-        return self.feed_time.strftime("%m/%d/%Y, %H:%M")
+        return self.feed_time.strftime("%m/%d, %H:%M")
     
     # return entries recorded in past 24 hours and not in the future
     def was_recorded_recently(self):
@@ -86,7 +111,7 @@ class Sleeping(models.Model):
 
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
-        return self.nap_start_time.strftime("%m/%d/%Y, %H:%M")
+        return self.nap_start_time.strftime("%m/%d, %H:%M")
     
     # return entries recorded in past 24 hours and not in the future
     def was_recorded_recently(self):
@@ -118,7 +143,7 @@ class Growth(models.Model):
 
     # when we call the model lets return something helpful to identify the object
     def __str__(self):
-        return self.measurement_time.strftime("%m/%d/%Y, %H:%M")
+        return self.measurement_time.strftime("%m/%d, %H:%M")
     
     # return entries recorded in past 24 hours and not in the future
     def was_recorded_recently(self):
