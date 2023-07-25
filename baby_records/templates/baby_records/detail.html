@@ -30,12 +30,24 @@
 
 
 <body>  
+<div class="container py-2">
     <h3> This is the {{entry_type}} entry you selected  </h3>
     {% csrf_token %} 
     {% for field in session_entry %}
         <li><b>{{ field.label }}:</b> {{ field.data }}</li>
     {% endfor %}
-    <!-- <div class="container py-2"> <a class="btn btn-outline-secondary" href="/baby_records/{{entry_type}}_edit/{{session_entry.entry_id}}" role="button">Update record </a> </div> -->
+    {% if form_header == 'toileting' %}
+        <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records/main_toilet" role="button">Return to toilet page </a> </div>
+    {% elif form_header == 'breast feeding' or form_header == 'bottle feeding' %}
+        <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records/main_feed" role="button">Return to feeding page </a> </div>
+    {% elif form_header == 'sleeping' %}
+        <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records/main_sleep" role="button">Return to sleeping page </a> </div>
+    {% elif form_header == 'growth measurements' %}
+        <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records/main_growth" role="button">Return to growth page </a> </div>
+    {% else %}
+        put button here XXX
+    {% endif %}
     <div class="container py-2"> <a class="btn btn-outline-primary" href="/baby_records" role="button">Return to home </a> </div>
+</div>
 </body>  
 </html> 

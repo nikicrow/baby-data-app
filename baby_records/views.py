@@ -73,19 +73,35 @@ def toilet_form(request):
     return render(request,'baby_records/form.html', context)
 
 
-def feeding_form(request):
-    form_header = 'feeding'
+def breast_feeding_form(request):
+    form_header = 'breast feeding'
     if request.method == "POST": 
         feeding_form = BreastFeedingForm(request.POST)  
         if feeding_form.is_valid(): 
             feeding_form.save() 
             try:  
-                return redirect('/baby_records/feeding_form/')  
+                return redirect('/baby_records/breast_feeding_form/')  
             except:  
                 pass  
     else:  
         feeding_form = BreastFeedingForm()  
-    context = {"form": feeding_form, "form_header" : form_header, "form_url": '/baby_records/feeding_form/'}
+    context = {"form": feeding_form, "form_header" : form_header, "form_url": '/baby_records/breast_feeding_form/'}
+    return render(request,'baby_records/form.html', context)
+
+
+def bottle_feeding_form(request):
+    form_header = 'bottle feeding'
+    if request.method == "POST": 
+        feeding_form = BottleFeedingForm(request.POST)  
+        if feeding_form.is_valid(): 
+            feeding_form.save() 
+            try:  
+                return redirect('/baby_records/bottle_feeding_form/')  
+            except:  
+                pass  
+    else:  
+        feeding_form = BottleFeedingForm()  
+    context = {"form": feeding_form, "form_header" : form_header, "form_url": '/baby_records/bottle_feeding_form/'}
     return render(request,'baby_records/form.html', context)
 
 
@@ -123,57 +139,86 @@ def growth_form(request):
 ### READ
 
 def toilet_detail(request, entry_id):
+    form_header = 'toileting'
     toilet_session = ToiletingForm(data=model_to_dict(Toileting.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': toilet_session, 'entry_type': 'toilet'})
+    context = {'session_entry': toilet_session, 'entry_type': 'toilet', 'form_header': form_header}
+    return render(request, 'baby_records/detail.html', context)
 
-def feeding_detail(request, entry_id):
-    feeding_session = FeedingForm(data=model_to_dict(Feeding.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': feeding_session, 'entry_type': 'feeding'})
+def breast_feeding_detail(request, entry_id):
+    form_header = 'breast feeding'
+    feeding_session = BreastFeedingForm(data=model_to_dict(BreastFeeding.objects.get(pk=entry_id)))
+    context = {'session_entry': feeding_session, 'entry_type': 'breast feeding', 'form_header': form_header}
+    return render(request, 'baby_records/detail.html', context)
+
+def bottle_feeding_detail(request, entry_id):
+    form_header = 'bottle feeding'
+    feeding_session = BottleFeedingForm(data=model_to_dict(BottleFeeding.objects.get(pk=entry_id)))
+    context = {'session_entry': feeding_session, 'entry_type': 'bottle feeding', 'form_header': form_header}
+    return render(request, 'baby_records/detail.html', context)
 
 def sleeping_detail(request, entry_id):
+    form_header = 'sleeping'
     sleeping_session = SleepingForm(data=model_to_dict(Sleeping.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': sleeping_session, 'entry_type': 'sleeping'})
+    context = {'session_entry': sleeping_session, 'entry_type': 'sleeping', 'form_header': form_header}
+    return render(request, 'baby_records/detail.html', context)
 
 def growth_detail(request, entry_id):
+    form_header = 'growth measurements'
     growth_session = GrowthForm(data=model_to_dict(Growth.objects.get(pk=entry_id)))
-    return render(request, 'baby_records/detail.html', {'session_entry': growth_session, 'entry_type': 'growth'})
+    context = {'session_entry': growth_session, 'entry_type': 'growth', 'form_header': form_header}
+    return render(request, 'baby_records/detail.html', context)
 
 ### UPDATE
 
 def toilet_update(request, entry_id):
+    form_header = 'toileting'
     record = Toileting.objects.get(pk = entry_id)
     form = ToiletingForm(request.POST or None, instance=record)  
     if form.is_valid():
         form.save()
         return redirect('/baby_records/')
-    context = {'session_entry': record, 'entry_type': 'toileting', 'form': form}
+    context = {'session_entry': record, 'entry_type': 'toileting', 'form': form, 'form_header': form_header}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
-def feed_update(request, entry_id):
-    record = Feeding.objects.get(pk = entry_id)
-    form = FeedingForm(request.POST or None, instance=record)  
+def breast_feed_update(request, entry_id):
+    form_header = 'breast feeding'
+    record = BreastFeeding.objects.get(pk = entry_id)
+    form = BreastFeedingForm(request.POST or None, instance=record)  
     if form.is_valid():
         form.save()
         return redirect('/baby_records/')
-    context = {'session_entry': record, 'entry_type': 'feeding', 'form': form}
+    context = {'session_entry': record, 'entry_type': 'breast feeding', 'form': form, 'form_header': form_header}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
+def bottle_feed_update(request, entry_id):
+    form_header = 'bottle feeding'
+    record = BottleFeeding.objects.get(pk = entry_id)
+    form = BottleFeedingForm(request.POST or None, instance=record)  
+    if form.is_valid():
+        form.save()
+        return redirect('/baby_records/')
+    context = {'session_entry': record, 'entry_type': 'bottle feeding', 'form': form, 'form_header': form_header}
+    return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
+
+
 def sleep_update(request, entry_id):
+    form_header = 'sleeping'
     record = Sleeping.objects.get(pk = entry_id)
     form = SleepingForm(request.POST or None, instance=record)  
     if form.is_valid():
         form.save()
         return redirect('/baby_records/')
-    context = {'session_entry': record, 'entry_type': 'sleeping', 'form': form}
+    context = {'session_entry': record, 'entry_type': 'sleeping', 'form': form, 'form_header': form_header}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
 def growth_update(request, entry_id):
+    form_header = 'growth measurements'
     record = Growth.objects.get(pk = entry_id)
     form = GrowthForm(request.POST or None, instance=record)  
     if form.is_valid():
         form.save()
         return redirect('/baby_records/')
-    context = {'session_entry': record, 'entry_type': 'growth', 'form': form}
+    context = {'session_entry': record, 'entry_type': 'growth', 'form': form, 'form_header': form_header}
     return render(request,'baby_records/update_record.html', context ) #redirect('/baby_records/') #HttpResponse('Record updated') # 
 
 ### DELETE
@@ -181,19 +226,24 @@ def growth_update(request, entry_id):
 def toilet_delete(request, entry_id):
    record = Toileting.objects.get(pk = entry_id)
    record.delete()
-   return redirect('/baby_records/')
+   return redirect('/baby_records/main_toilet')
 
-def feed_delete(request, entry_id):
-   record = Feeding.objects.get(pk = entry_id)
+def breast_feed_delete(request, entry_id):
+   record = BreastFeeding.objects.get(pk = entry_id)
    record.delete()
-   return redirect('/baby_records/')
+   return redirect('/baby_records/main_feed')
+
+def bottle_feed_delete(request, entry_id):
+   record = BottleFeeding.objects.get(pk = entry_id)
+   record.delete()
+   return redirect('/baby_records/main_feed')
 
 def sleep_delete(request, entry_id):
    record = Sleeping.objects.get(pk = entry_id)
    record.delete()
-   return redirect('/baby_records/')
+   return redirect('/baby_records/main_sleep')
 
 def growth_delete(request, entry_id):
    record = Growth.objects.get(pk = entry_id)
    record.delete()
-   return redirect('/baby_records/')
+   return redirect('/baby_records/main_growth')

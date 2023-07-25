@@ -34,7 +34,10 @@
     <h1 class="text-center">Hello! Welcome to the Baby Crow {{entry_type}} records </h1>
 </header>
 <div class="container py-2">
-    <a class="btn btn-outline-warning" href="/baby_records/feeding_form" role="button">Create new breast {{entry_type}} record</a>
+    <a class="btn btn-outline-warning" href="/baby_records/breast_feeding_form" role="button">Create new breast {{entry_type}} record</a>
+</div>
+<div class="container py-2">
+    <a class="btn btn-outline-warning" href="/baby_records/bottle_feeding_form" role="button">Create new bottle {{entry_type}} record</a>
 </div>
 
 
@@ -59,14 +62,14 @@
         <tbody>
             {% for record in latest_records_list_br %}
             <tr>
-                <th scope = "row"><a href="/baby_records/feeding/{{ record.id }}"> {{record.id}}</a></th>
+                <th scope = "row"><a href="/baby_records/breast_feeding/{{ record.id }}"> {{record.id}}</a></th>
                 <td>{{ record.which_boob_first }}</td>
                 <td>{{ record.right_boob_time }}</td>
                 <td>{{ record.left_boob_time }}</td>
                 <td>{{ record.feed_time }}</td>
                 <td>{{ record.notes }}</td>
-                <td><a method="POST" href="/baby_records/feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
-                <td><a method="POST" href="/baby_records/feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/breast_feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/breast_feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -93,13 +96,13 @@
         <tbody>
             {% for record in latest_records_list_bt %}
             <tr>
-                <th scope = "row"><a href="/baby_records/feeding/{{ record.id }}"> {{record.id}}</a></th>
+                <th scope = "row"><a href="/baby_records/bottle_feeding/{{ record.id }}"> {{record.id}}</a></th>
                 <td>{{ record.drinking_ml }}</td>
                 <td>{{ record.drinking_time }}</td>
                 <td>{{ record.feed_time }}</td>
                 <td>{{ record.notes }}</td>
-                <td><a method="POST" href="/baby_records/feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
-                <td><a method="POST" href="/baby_records/feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/bottle_feed_update/{{ record.id }}"> Edit {{record.id}}</a></td>
+                <td><a method="POST" href="/baby_records/bottle_feed_delete/{{ record.id }}"> Delete {{record.id}}</a></td>
             </tr>
             {% endfor %}
         </tbody>
