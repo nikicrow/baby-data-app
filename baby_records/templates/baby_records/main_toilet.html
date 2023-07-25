@@ -33,12 +33,13 @@
     <centre></centre>
     <h1 class="text-center">Hello! Welcome to the Baby Crow {{entry_type}} records </h1>
 </header>
-<div class="d-flex justify-content-between px-2">
+<div class="container py-2">
     <a class="btn btn-outline-warning" href="/baby_records/toilet_form" role="button">Create new {{entry_type}} record</a>
 </div>
 
 
 <body>
+<div class="container py-2">
 <h2>Latest {{entry_type}} entries below:</h2>
 {% if latest_records_list %}
     <table class="table">
@@ -78,4 +79,5 @@
 {% endif %}
 
 </body>
+</div>
 </html>

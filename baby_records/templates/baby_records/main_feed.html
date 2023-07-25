@@ -33,13 +33,15 @@
     <centre></centre>
     <h1 class="text-center">Hello! Welcome to the Baby Crow {{entry_type}} records </h1>
 </header>
-<div class="d-flex justify-content-between px-2">
+<div class="container py-2">
     <a class="btn btn-outline-warning" href="/baby_records/feeding_form" role="button">Create new breast {{entry_type}} record</a>
 </div>
 
 
 <body>
+<div class="container py-2">
 <h2>Latest breast {{entry_type}} entries below:</h2>
+
 {% if latest_records_list_br %}
     <table class="table">
         <thead>
@@ -72,6 +74,8 @@
 {% else %}
     <p>No breast {{entry_type}} records are available.</p>
 {% endif %}
+</div>
+<div class="container py-2">
 {% if latest_records_list_bt %}
 <h2>Latest bottle {{entry_type}} entries below:</h2>
     <table class="table">
@@ -103,6 +107,6 @@
 {% else %}
     <p>No bottle {{entry_type}} records are available.</p>
 {% endif %}
-
+</div>
 </body>
 </html>
