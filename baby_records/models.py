@@ -128,7 +128,7 @@ class Growth(models.Model):
         default=0,
         validators=[MinValueValidator(0)]
     )
-    weight =  models.IntegerField(
+    weight =  models.FloatField(
         default=0,
         validators=[MinValueValidator(0)]
     )
